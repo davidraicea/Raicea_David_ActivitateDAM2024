@@ -1,6 +1,8 @@
 package com.example.seminar3;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,4 +23,14 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
+    public void deschideActivitate(View view)
+    {
+        Intent it = new Intent(this, MainActivity2.class);
+        it.putExtra("text","Acesta este un text transmis din prima activitate.");
+        it.putExtra("numar1", 17);
+        it.putExtra("numar2",18);
+        startActivity(it);
+    }
+    //plusmetoda
 }
+

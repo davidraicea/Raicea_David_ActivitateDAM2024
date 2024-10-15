@@ -1,6 +1,9 @@
 package com.example.seminar3;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +23,17 @@ public class MainActivity2 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Intent it = getIntent();
+        String text = it.getStringExtra("text");
+        int valoare = it.getIntExtra("numar1",0);
+        int valoare2 = it.getIntExtra("numar2",0);
+        Toast.makeText(this, "Suma este: " + (valoare + valoare2), Toast.LENGTH_LONG).show();
+
     }
+    public void apasareButon(View view)
+    {
+
+    }
+
+
 }
