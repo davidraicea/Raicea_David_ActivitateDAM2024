@@ -1,8 +1,10 @@
 package com.example.seminar04;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.View;
 
-public class Disc {
+public class Disc implements Parcelable {
     private String nume;
     private float raza;
     private float diametru;
@@ -21,6 +23,42 @@ public class Disc {
         this.arie = Math.PI * raza * raza;
         this.important = important;
     }
+
+    protected Disc(Parcel in) {
+        nume = in.readString();
+        raza = in.readFloat();
+        diametru = in.readFloat();
+        vechime = in.readString();
+        important = in.readByte() != 0;
+        arie = in.readDouble();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(nume);
+        dest.writeFloat(raza);
+        dest.writeFloat(diametru);
+        dest.writeString(vechime);
+        dest.writeByte((byte) (important ? 1 : 0));
+        dest.writeDouble(arie);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Disc> CREATOR = new Creator<Disc>() {
+        @Override
+        public Disc createFromParcel(Parcel in) {
+            return new Disc(in);
+        }
+
+        @Override
+        public Disc[] newArray(int size) {
+            return new Disc[size];
+        }
+    };
 
     public String getNume() {
         return nume;

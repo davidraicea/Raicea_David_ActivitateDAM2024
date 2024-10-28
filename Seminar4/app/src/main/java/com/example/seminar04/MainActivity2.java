@@ -1,5 +1,6 @@
 package com.example.seminar04;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -28,13 +29,27 @@ public class MainActivity2 extends AppCompatActivity {
     }
     public void creareDisc(View view)
     {
-        EditText nume = findViewById(R.id.nume);
-        EditText raza = findViewById(R.id.raza);
-        Switch important = findViewById(R.id.important);
-        boolean importantBool = important.isActivated();
+        String nume = ((EditText)findViewById(R.id.nume)).getText().toString();
+        String razaText = ((EditText) findViewById(R.id.raza)).getText().toString();
+        boolean importantBool = ((Switch)findViewById(R.id.important)).isChecked();
         Spinner vechime = findViewById(R.id.vechime);
         String vechimeString = vechime.getSelectedItem().toString();
-        Disc disc = new Disc(nume.toString(),Float.parseFloat(String.valueOf(raza)),importantBool,vechimeString);
-        Toast.makeText(this,disc.toString(), Toast.LENGTH_LONG).show();
+
+        float raza = 0;
+        try {
+            raza = Float.parseFloat(razaText);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Introduceți o valoare validă pentru rază.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Disc disc = new Disc(nume, raza, importantBool, vechimeString);
+
+        //Toast.makeText(this, disc.toString(), Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent();
+        intent.putExtra("disc", disc);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
