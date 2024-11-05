@@ -1,5 +1,6 @@
 package com.example.seminar04;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,6 +9,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,6 +20,9 @@ import java.util.ArrayList;
 public class ActivityLista extends AppCompatActivity {
 
     private ArrayList<Disc> discList;
+    private int idModificat = 0;
+    private DiscAdapter adapter = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +38,22 @@ public class ActivityLista extends AppCompatActivity {
         discList = getIntent().getParcelableArrayListExtra("discList");
         if(discList != null)
         {
-            ArrayAdapter<Disc> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,discList);
+//            ArrayAdapter<Disc> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,discList);
+//            listView.setAdapter(adapter);
+
+            adapter = new DiscAdapter(discList,getApplicationContext(),R.layout.raw_item);
             listView.setAdapter(adapter);
+
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intentModifica = new Intent(getApplicationContext(),MainActivity2.class);
+                    intentModifica.putExtra("disc",discList.get(position));
+                    idModificat = position;
+                    startActivityForResult(intentModifica,200);
+
                     Toast.makeText(ActivityLista.this, discList.get(position).toString(), Toast.LENGTH_SHORT).show();
+
                 }
             });
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -53,4 +68,16 @@ public class ActivityLista extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(RESULT_OK == resultCode)
+        {
+            if(requestCode == 200)
+            {
+                discList.set(idModificat,data.getParcelableExtra("disc"));
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
 }

@@ -26,6 +26,25 @@ public class MainActivity2 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Intent it = getIntent();
+        if(it.hasExtra("disc"))
+        {
+            Disc disc = it.getParcelableExtra("disc");
+
+            EditText nume = findViewById(R.id.nume);
+            EditText raza = findViewById(R.id.raza);
+            Spinner vechime = findViewById(R.id.vechime);
+            Switch important = findViewById(R.id.important);
+
+            nume.setText(disc.getNume());
+            raza.setText(String.valueOf(disc.getRaza()));
+            if(disc.getVechime().equals("nou"))
+                vechime.setActivated(true);
+            if(disc.isImportant())
+                important.isActivated();
+        }
+
     }
     public void creareDisc(View view)
     {
