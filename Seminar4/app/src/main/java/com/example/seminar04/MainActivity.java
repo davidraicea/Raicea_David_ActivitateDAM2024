@@ -42,11 +42,12 @@ public class MainActivity extends AppCompatActivity {
         btnLista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(MainActivity.this, ActivityLista.class);
+                Intent it = new Intent(getApplicationContext(), ActivityLista.class);
                 it.putParcelableArrayListExtra("discList",discList);
                 startActivity(it);
             }
         });
+
 
     }
 
@@ -65,6 +66,13 @@ public class MainActivity extends AppCompatActivity {
 //        Intent it = new Intent(this, MainActivity2.class);
 //        startActivity(it);
 //    }
+
+    public void deschideImagini(View view)
+    {
+        Intent it = new Intent(getApplicationContext(), ActivityListaImagini.class);
+        startActivity(it);
+    }
+
 
 
 }

@@ -71,13 +71,10 @@ public class ActivityLista extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(RESULT_OK == resultCode)
+        if(RESULT_OK == resultCode && requestCode == 200)
         {
-            if(requestCode == 200)
-            {
                 discList.set(idModificat,data.getParcelableExtra("disc"));
                 adapter.notifyDataSetChanged();
-            }
         }
     }
 }
