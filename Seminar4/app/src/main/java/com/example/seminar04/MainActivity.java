@@ -73,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(it);
     }
 
+    public void deschideVreme(View view)
+    {
+        Intent it = new Intent(this, ActivityAccuWeather.class);
+        startActivity(it);
+    }
+
 
 
 }
