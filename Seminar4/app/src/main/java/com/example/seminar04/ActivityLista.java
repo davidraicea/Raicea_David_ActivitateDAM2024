@@ -2,6 +2,8 @@ package com.example.seminar04;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,12 +16,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.room.Room;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class ActivityLista extends AppCompatActivity {
-
-    private ArrayList<Disc> discList;
+    BazaDeDateDiscuri database;
+    private List<Disc> discList;
     private int idModificat = 0;
     private DiscAdapter adapter = null;
 
@@ -35,14 +41,35 @@ public class ActivityLista extends AppCompatActivity {
         });
         ListView listView = findViewById(R.id.listView);
 
-        discList = getIntent().getParcelableArrayListExtra("discList");
+        //discList = getIntent().getParcelableArrayListExtra("discList");
+
+        database = Room.databaseBuilder(getApplicationContext(), BazaDeDateDiscuri.class,"discuri_db").build();
+
+        discList = new ArrayList<>();
+        Executor executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.myLooper());
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                discList = database.interfataDao().getDiscuri();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter = new DiscAdapter(discList,getApplicationContext(),R.layout.raw_item);
+                        listView.setAdapter(adapter);
+                    }
+                });
+            }
+        });
+
+
+
         if(discList != null)
         {
 //            ArrayAdapter<Disc> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,discList);
 //            listView.setAdapter(adapter);
 
-            adapter = new DiscAdapter(discList,getApplicationContext(),R.layout.raw_item);
-            listView.setAdapter(adapter);
+
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -59,8 +86,22 @@ public class ActivityLista extends AppCompatActivity {
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    discList.remove(position);
-                    adapter.notifyDataSetChanged();
+                    Executor executor = Executors.newSingleThreadExecutor();
+                    Handler handler = new Handler(Looper.myLooper());
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            database.interfataDao().delete(discList.get(position));
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    discList.remove(position);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+
+                    });
                     return false;
                 }
             });

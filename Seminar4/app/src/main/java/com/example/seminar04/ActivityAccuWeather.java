@@ -33,7 +33,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class ActivityAccuWeather extends AppCompatActivity {
-    String apiKey = "mdZ6aCBXBHSDbg6j4IuT7mA7QV34ANUg" ;
+    String apiKey = "GCH7H3rVO5ofAxHM4NyynIhWxmTqDq2T" ;
     String cheieOras;
     String min;
     String max;

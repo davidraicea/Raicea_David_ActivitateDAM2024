@@ -13,9 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.room.Database;
+import androidx.room.Room;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MainActivity2 extends AppCompatActivity {
-
+    BazaDeDateDiscuri database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +31,9 @@ public class MainActivity2 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        //baza de date:
+        database = Room.databaseBuilder(getApplicationContext(), BazaDeDateDiscuri.class,"discuri_db").build();
 
         Intent it = getIntent();
         if(it.hasExtra("disc"))
@@ -65,6 +73,17 @@ public class MainActivity2 extends AppCompatActivity {
         Disc disc = new Disc(nume, raza, importantBool, vechimeString);
 
         //Toast.makeText(this, disc.toString(), Toast.LENGTH_LONG).show();
+
+
+
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                database.interfataDao().insert(disc);
+            }
+        });
+
 
         Intent intent = new Intent();
         intent.putExtra("disc", disc);

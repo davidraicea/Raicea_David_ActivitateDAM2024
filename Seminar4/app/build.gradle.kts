@@ -32,7 +32,18 @@ android {
 }
 
 dependencies {
+//room-compiler, room-runtime
+    //in clasa disc, @entinty cu table name discuri
+    //primary key autogenerate, not null @
+    //interfata DAO
+    //insert, query
+    //baza de date-clasa abstracta - returneaza un obiect de tip dao
+    //adnotari: Database, TypeConverters - clasa conversie (metode @typeconverter),anunt in db ca fol. acest converter
+    //utilizare: in adaugare, create database = Room.databaseBuilder
+    //adaugare pe fir secundar (inainte de intent)
 
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-runtime:2.6.1")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

@@ -4,7 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import org.jetbrains.annotations.NotNull;
+
+@Entity(tableName = "Discuri")
 public class Disc implements Parcelable {
+    @PrimaryKey
+    @NotNull
     private String nume;
     private float raza;
     private float diametru;
