@@ -1,6 +1,7 @@
 package com.example.seminar04;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -86,22 +87,28 @@ public class ActivityLista extends AppCompatActivity {
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    Executor executor = Executors.newSingleThreadExecutor();
-                    Handler handler = new Handler(Looper.myLooper());
-                    executor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            database.interfataDao().delete(discList.get(position));
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    discList.remove(position);
-                                    adapter.notifyDataSetChanged();
-                                }
-                            });
-                        }
+//                    Executor executor = Executors.newSingleThreadExecutor();
+//                    Handler handler = new Handler(Looper.myLooper());
+//                    executor.execute(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            database.interfataDao().delete(discList.get(position));
+//                            handler.post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    discList.remove(position);
+//                                    adapter.notifyDataSetChanged();
+//                                }
+//                            });
+//                        }
+//
+//                    });
 
-                    });
+                    SharedPreferences sp = getSharedPreferences("obiecteFavorite",MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString(discList.get(position).getKey(),discList.get(position).toString());
+                    editor.commit();
+                    Toast.makeText(ActivityLista.this, "Discul a fost adaugat la favorite!", Toast.LENGTH_SHORT).show();
                     return false;
                 }
             });

@@ -16,6 +16,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Database;
 import androidx.room.Room;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -72,14 +78,31 @@ public class MainActivity2 extends AppCompatActivity {
 
         Disc disc = new Disc(nume, raza, importantBool, vechimeString);
 
+        //scriere in fisier
+
+
         //Toast.makeText(this, disc.toString(), Toast.LENGTH_LONG).show();
 
 
 
+
+        //scriere in bd
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(new Runnable() {
             @Override
             public void run() {
+                try {
+                    FileOutputStream fileOutputStream = openFileOutput("obiecteNoi.txt",MODE_PRIVATE);
+                    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+                    BufferedWriter writer = new BufferedWriter(outputStreamWriter);
+                    writer.write(disc.toString());
+                    writer.close();
+                    outputStreamWriter.close();
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 database.interfataDao().insert(disc);
             }
         });

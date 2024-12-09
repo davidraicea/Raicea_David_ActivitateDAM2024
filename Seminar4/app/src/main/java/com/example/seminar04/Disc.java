@@ -28,7 +28,7 @@ public class Disc implements Parcelable {
         this.raza = raza;
         this.vechime = vechime;
         this.diametru = 2*raza;
-        this.arie = Math.PI * raza * raza;
+        this.arie = Math.floor(Math.PI * raza * raza * 100) / 100;
         this.important = important;
     }
 
@@ -99,6 +99,15 @@ public class Disc implements Parcelable {
     public void setArie(double arie) {
         this.arie = arie;
     }
+
+    public String getKey(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.nume);
+        sb.append("-");
+        sb.append(String.valueOf(((int) raza) % 100));
+        return sb.toString();
+    }
+
 
     @Override
     public String toString() {

@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(it);
     }
 
+    public void deschideFavorite(View view){
+        Intent it = new Intent(getApplicationContext(), ListaFavorite.class);
+        startActivity(it);
+    }
+
 
 
 }
