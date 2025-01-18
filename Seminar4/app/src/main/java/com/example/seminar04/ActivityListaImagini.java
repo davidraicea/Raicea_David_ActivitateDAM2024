@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -46,11 +47,13 @@ public class ActivityListaImagini extends AppCompatActivity {
         linkuriImagini.add("https://dt7v1i9vyp3mf.cloudfront.net/styles/news_large/s3/imagelibrary/1/1998-07-cdnextgen-1-0lTN9nwNtHZyDzJ2yXmUdc94BT8UApcc.jpg");
         linkuriImagini.add("https://www.materiale.ro/userfiles/dd42513e-307e-4ecd-b04e-52685e9ce931/products/1848868_big.jpg");
 
+        List<Bitmap> imagini = new ArrayList<>();
+
         Executor executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.myLooper());
 
 
-        List<Bitmap> imagini = new ArrayList<>();
+
 
 
         executor.execute(new Runnable() {
@@ -94,6 +97,10 @@ public class ActivityListaImagini extends AppCompatActivity {
             }
 
         });
+
+
+
+
 
 
 

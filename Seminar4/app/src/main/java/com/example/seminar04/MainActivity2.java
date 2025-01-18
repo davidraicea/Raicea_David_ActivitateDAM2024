@@ -3,6 +3,7 @@ package com.example.seminar04;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -16,6 +17,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Database;
 import androidx.room.Room;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -27,6 +31,7 @@ import java.util.concurrent.Executors;
 
 public class MainActivity2 extends AppCompatActivity {
     BazaDeDateDiscuri database;
+    FirebaseDatabase databaseFirebase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +42,8 @@ public class MainActivity2 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
 
         //baza de date:
         database = Room.databaseBuilder(getApplicationContext(), BazaDeDateDiscuri.class,"discuri_db").build();
@@ -58,6 +65,9 @@ public class MainActivity2 extends AppCompatActivity {
             if(disc.isImportant())
                 important.isActivated();
         }
+
+
+        databaseFirebase = FirebaseDatabase.getInstance("https://seminar04-560b9-default-rtdb.europe-west1.firebasedatabase.app/");
 
     }
     public void creareDisc(View view)
@@ -105,11 +115,27 @@ public class MainActivity2 extends AppCompatActivity {
 
                 database.interfataDao().insert(disc);
             }
-        });
 
+
+        });
 
         Intent intent = new Intent();
         intent.putExtra("disc", disc);
+
+        CheckBox disponibilOnlineCB = findViewById(R.id.disponibilOnline);
+        if(disponibilOnlineCB.isChecked()){
+
+            DatabaseReference myRef = databaseFirebase.getReference("disc");
+            DatabaseReference child = myRef.child(disc.getKey());
+            child.setValue(disc);
+
+            intent.putExtra("disponibilOnline", true);
+        }
+        else{
+            intent.putExtra("disponibilOnline", false);
+        }
+
+
         setResult(RESULT_OK, intent);
         finish();
     }

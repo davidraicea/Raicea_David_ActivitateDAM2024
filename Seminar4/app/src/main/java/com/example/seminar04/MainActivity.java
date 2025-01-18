@@ -13,6 +13,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
         Button btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +53,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btnFirebase  = findViewById(R.id.btnFirebase);
+        btnFirebase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(getApplicationContext(), ListaFirebase.class);
+                startActivity(it);
+            }
+        });
+
 
     }
 
@@ -56,9 +70,14 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 123 && resultCode == RESULT_OK && data != null) {
             Disc disc = data.getParcelableExtra("disc");
+            boolean disponibilOnline = data.getBooleanExtra("disponibilOnline", false);
             if (disc != null) {
                 discList.add(disc);
                 Toast.makeText(this, "Obiectul a fost adăugat: " + disc.toString(), Toast.LENGTH_LONG).show();
+                if(disponibilOnline){
+                    Toast.makeText(this, "Este disponibil in firebase.", Toast.LENGTH_SHORT).show();
+                }
+                
             }
         }
     }

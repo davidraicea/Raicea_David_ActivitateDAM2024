@@ -18,4 +18,5 @@ public interface InterfataDao {
 
     @Delete
     void delete(Disc disc);
+
 }

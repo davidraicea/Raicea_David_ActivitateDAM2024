@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -32,7 +33,8 @@ android {
 }
 
 dependencies {
-//room-compiler, room-runtime
+implementation(libs.firebase.database)
+    //room-compiler, room-runtime
     //in clasa disc, @entinty cu table name discuri
     //primary key autogenerate, not null @
     //interfata DAO
